@@ -1,3 +1,5 @@
+import json5 as json
+
 from fastapi import FastAPI, Request
 from actions.actions import *
 import uvicorn
@@ -197,13 +199,12 @@ async def get_app_status():
 async def set_app_status(info: Request):
     global app_status
     data = await info.json()
+    print(data["system_message"])
     app_status = data
     with open("../system_message.md", "w") as f:
         f.write(app_status["system_message"])
-        f.close()
     with open("../user_message.md", "w") as f:
         f.write(app_status["user_template_message"])
-        f.close()
     return {
         "status": "SUCCESS",
         "data": app_status
