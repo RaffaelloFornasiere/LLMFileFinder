@@ -2,6 +2,8 @@ import json5 as json
 import os
 from abc import ABC, abstractmethod
 
+from attr import attributes
+
 
 class NodeNavigator(ABC):
     def __init__(self, root_name: str):
@@ -90,13 +92,31 @@ class NodeNavigator(ABC):
             tree_node["useful"] = False
         return
 
-    def get_json(self):
+    def print(self):
         """
-        Get the JSON representation of the tree
-        :return:
+        Get the representation of the tree in the following format:
+            root/
+              - src/ (property: value) (property: value)
+              - config/ (property: value) (property: value)
+                - nginx.conf (Useful: True)
+                - database.yml (explored: false)
+                - temp.log (explored: false)
+              - README.md (Useful: true)
+        :return: str
         """
 
-        return json.dumps(self.tree, indent=2)
+        def print_node(node, depth):
+            node_name = node["name"]
+            children = node.get("children", [])
+            attributes = node.keys() - ["name", "children"]
+
+            header = f"\n{'  ' * depth}- {node_name}" + "".join([f" ({attr}: {node[attr]})" for attr in attributes])
+            for child in children:
+                header += print_node(child, depth + 1)
+
+            return header
+
+        return print_node(self.tree, 0)
 
     def parse(self, response):
         """
@@ -136,18 +156,20 @@ class NodeNavigator(ABC):
         """
         action_name = action["action"]
         node = action["node"]
+        res = None
 
         if action_name == "expand":
-            self.expand(node)
+            res = self.expand(node)
         elif action_name == "open":
-            self.open(node)
+            res = self.open(node)
         elif action_name == "close":
             self.close(node)
         elif action_name == "mark_as_useful":
             self.mark_as_useful(node)
         elif action_name == "mark_as_useless":
             self.mark_as_useless(node)
-        return
+
+        return res
 
 
 class FileNavigator(NodeNavigator):

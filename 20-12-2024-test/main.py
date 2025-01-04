@@ -18,7 +18,7 @@ objective = "Find the game rest controller file/s"
 
 messages = [
     {"role": "system", "content": system_message},
-    {"role": "user", "content": user_message.format(tree=tree.get_json(),
+    {"role": "user", "content": user_message.format(tree=tree.get_print(),
                                                     operation_history=operation_history,
                                                     objective=objective)},
 ]

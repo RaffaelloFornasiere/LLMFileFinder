@@ -20,6 +20,10 @@ def get_response(messages, model, base_url, response_format=None):
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.json()
 
+def get_models(base_url):
+    url = base_url + "/v1/models"
+    response = requests.get(url)
+    return response.json()
 
 def parse_response_text(response):
     return response["choices"][0]["message"]["content"]
