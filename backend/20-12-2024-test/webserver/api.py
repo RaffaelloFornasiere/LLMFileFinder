@@ -243,7 +243,7 @@ async def save_example(info: Request):
 
     ### save new examples
     for i, example in enumerate(examples):
-        with open(f"../examples/example_{i}.txt", "w") as f:
+        with open(f"../examples/{i}.md", "w") as f:
             f.write(example)
 
     return {
