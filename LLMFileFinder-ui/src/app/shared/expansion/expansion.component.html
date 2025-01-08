@@ -1,0 +1,20 @@
+<div
+     style="gap: 0.75rem;
+     border-radius: 0.25rem;
+     width: 100%; display: flex;
+     flex-direction: column;
+     transition: all ease-in-out 0.3s">
+  <div style="display: flex; justify-content: space-between; align-items: center" (click)="opened.set(!opened())">
+    <div style="flex-grow: 1">
+      <ng-content select="header"></ng-content>
+      <div
+        style="width: 100%; padding-left: 0.25rem; transition: grid-template-rows 0.5s ease-in-out; display: grid"
+        [style]="{ 'grid-template-rows': !opened() ? '0fr' : '1fr' }"
+      >
+        <div style="overflow: hidden">
+          <ng-content select="content"></ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

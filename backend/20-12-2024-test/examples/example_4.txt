@@ -1,0 +1,49 @@
+#### User Query:
+Find CSV files with processed data for integrity verification.
+
+#### Current Tree State:
+```txt
+root/
+  - data/ (Expanded)
+    - raw/ (Useless)
+    - processed/ (Expanded)
+      - data1.csv (Unexplored)
+      - data2.csv (Unexplored)
+    - temp.json (Useless)
+  - scripts/ (Unexplored)
+```
+
+#### Summarized History:
+```json
+[
+  {
+    "action": "expand",
+    "node": "root/data",
+    "short_comment": "The 'data' folder is likely to contain raw and processed data files."
+  },
+  {
+    "action": "expand",
+    "node": "root/data/processed",
+    "short_comment": "The 'processed' folder likely contains the files needed for verification."
+  },
+  {
+    "action": "mark_as_useless",
+    "node": "root/data/raw",
+    "short_comment": "The 'raw' folder contains unprocessed data and is irrelevant for verification."
+  },
+  {
+    "action": "mark_as_useless",
+    "node": "root/data/temp.json",
+    "short_comment": "The 'temp.json' file is unrelated to the query."
+  }
+]
+```
+
+#### Next Suggested Action:
+```json
+{
+  "action": "open",
+  "node": "root/data/processed/data1.csv",
+  "short_comment": "The 'data1.csv' file is the first candidate for integrity verification."
+}
+```

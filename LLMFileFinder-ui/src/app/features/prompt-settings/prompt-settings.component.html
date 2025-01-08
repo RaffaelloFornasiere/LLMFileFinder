@@ -1,0 +1,38 @@
+<div class="gap-3 h-full flex-col flex " ngProjectAs="one">
+  <button class="rounded bg-primary p-2 ">Reset</button>
+  <div class="flex w-full justify-between">
+    <select class=" border-primary border-2 p-2 rounded outline-none bg-inherit ">
+      <option>select model</option>
+      @for (model of models(); track $index) {
+        <option>{{ model }}</option>
+      }
+    </select>
+  </div>
+  <div class="flex flex-col gap-2 flex-grow">
+
+    <strong>System Message</strong>
+    <textarea class="bg-inherit p-5 border-primary border-2 rounded resize-none w-full h-1/2"
+              [(ngModel)]="systemMessage"
+    ></textarea>
+    <div class="flex justify-end">
+      <button class="rounded bg-primary p-2"
+              (click)="service.saveAppStatusProperty('system_message', systemMessage, appStatus())"
+      >Save
+      </button>
+    </div>
+
+
+    <strong>User Template Message</strong>
+    <textarea class="bg-inherit p-5 border-primary border-2 rounded resize-none w-full h-1/2"
+              [(ngModel)]="userTemplateMessage"
+    ></textarea>
+    <div class="flex justify-end">
+      <button class="rounded bg-primary p-2"
+              (click)="service.saveAppStatusProperty('user_template_message', userTemplateMessage, appStatus())"
+      >Save
+      </button>
+    </div>
+  </div>
+
+
+</div>

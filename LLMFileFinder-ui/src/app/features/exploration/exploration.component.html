@@ -1,0 +1,51 @@
+<div class="h-full">
+
+  <div class="w-full flex flex-col h-1/2 gap-1">
+    <div class="w-full flex items-center gap-2">
+      <input class="rounded border-primary border-2 p-2 outline-none bg-gray-800 flex-grow"
+             [value]="appStatus()['path']"
+      >
+      <button class="rounded border-primary border-2 p-2">Set Path</button>
+    </div>
+    <div class="w-full flex items-center gap-2">
+      <input class="rounded border-primary border-2 p-2 outline-none bg-gray-800 flex-grow"
+             [value]="_objective()"
+      >
+      <button class="rounded border-primary border-2 p-2">Set Objective</button>
+    </div>
+    <strong>Explored Tree</strong>
+    <div class="p-2 border-primary border-2 rounded w-full h-[90%]">
+      <jhi-tree-view
+        [expandLevels]="1000"
+        [tree]="treeView()"
+      >
+      </jhi-tree-view>
+    </div>
+  </div>
+
+  <div class="w-full flex flex-col h-1/2 gap-1">
+    <strong>History</strong>
+    <div class="p-2 border-primary border-2 rounded w-full h-[90%] ">
+      <div class="flex gap-2 w-full flex-col overflow-hidden h-full">
+
+        @for (action of _history(); track $index) {
+          <jhi-expansion class="w-full flex border rounded p-1 gap-2 border-primary" #expansionComponent>
+            <div class="p-1 gap-2 w-full flex justify-between items-center" ngProjectAs="header">
+              <div class="flex-grow">
+                <span><strong>Action: </strong>{{ action.action }}</span>
+                <span><strong>Node: </strong>{{ action.node }}</span>
+              </div>
+              <span class="material-icons transition-all duration-200"
+
+                    [class.rotate-180]="expansionComponent.opened()"
+              >keyboard_arrow_down</span>
+            </div>
+            <div ngProjectAs="content">
+              <span><strong>Comment: </strong>{{ action.short_comment }}</span>
+            </div>
+          </jhi-expansion>
+        }
+      </div>
+    </div>
+  </div>
+</div>

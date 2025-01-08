@@ -1,0 +1,18 @@
+<div class="flex flex-grow" #container
+     (mouseup)="this.dragging.set(false)"
+     (mousemove)="drag($event)"
+>
+  <div [style]="{width: oneDim()+'%'}">
+    <ng-content select="one"></ng-content>
+  </div>
+  <div class="px-2 cursor-col-resize"
+       (mousedown)="this.dragging.set(true)"
+  >
+  <div class="border-l h-full "
+
+  ></div>
+  </div>
+  <div [style]="{width: (100-oneDim())+'%'}">
+    <ng-content select="two"></ng-content>
+  </div>
+</div>

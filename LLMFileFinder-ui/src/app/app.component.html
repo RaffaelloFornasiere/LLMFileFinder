@@ -1,0 +1,17 @@
+<div class="h-screen flex flex-col ">
+
+  <jhi-tabs class="text-slate-300" [activeTab]="activeTab()"
+            (activeTabChange)="routeTab($event)"
+            #tabsComponent
+  >
+    @for (tab of tabs; track tab.name) {
+      <div *jhiTab="tab.name"></div>
+    }
+  </jhi-tabs>
+  <div class="h-[90%] p-5">
+
+    <router-outlet class="">
+
+    </router-outlet>
+  </div>
+</div>

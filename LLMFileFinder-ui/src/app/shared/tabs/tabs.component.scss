@@ -1,0 +1,9 @@
+
+  .tab {
+    @apply border-slate-200 border-0 border-b
+  }
+
+  .selected-tab {
+    @apply bg-opacity-30 border-t border-l border-r rounded-t border-b-0
+  }
+
