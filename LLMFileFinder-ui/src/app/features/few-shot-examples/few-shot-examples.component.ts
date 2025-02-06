@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {Service} from '../../service';
@@ -12,7 +12,19 @@ import {Service} from '../../service';
   styleUrl: './few-shot-examples.component.scss'
 })
 export class FewShotExamplesComponent implements OnInit {
-  examples:any[] = []
+  _examples = signal<any[]>([]);
+
+  get examples() {
+    return this._examples();
+  }
+
+  set examples(value) {
+    this._examples.set(value);
+  }
+
+  readonly WORD_TOKEN_CONV = 3.0/4.0;
+  tokenCount = signal(0);
+
 
   protected activatedRoute = inject(ActivatedRoute);
   protected service = inject(Service);
@@ -21,6 +33,9 @@ export class FewShotExamplesComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.data.subscribe(({examples}) => {
       this.examples = examples;
+    })
+    this.service.getTokenCount(this.examples.join('\n---\n\n')).subscribe((response: any) => {
+      this.tokenCount.set(response.data)
     })
   }
 

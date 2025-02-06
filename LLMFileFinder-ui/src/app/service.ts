@@ -21,6 +21,10 @@ export class Service {
     return this.http.get(`${this.baseUrl}/new_tree`)
   }
 
+  getNextAction() {
+    return this.http.get(`${this.baseUrl}/get_next_action`)
+  }
+
   getModels() {
     return this.http.get(`${this.baseUrl}/models`, { observe: 'response' })
   }
@@ -40,5 +44,13 @@ export class Service {
 
   saveExamples(examples: any) {
     return this.http.post(`${this.baseUrl}/examples`, examples)
+  }
+
+  runAction(action: any) {
+    return this.http.post(`${this.baseUrl}/run_action`, action)
+  }
+
+  getTokenCount(text: any) {
+    return this.http.post(`${this.baseUrl}/token_count`, {text: text})
   }
 }

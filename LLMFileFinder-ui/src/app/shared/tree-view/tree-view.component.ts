@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, Directive, ElementRef, input, model, QueryList, TemplateRef, ViewChildren } from '@angular/core';
-import { ExpansionComponent } from '../expansion/expansion.component';
-import { KeyValuePipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import {AfterViewInit, Component, Directive, ElementRef, input, model, QueryList, ViewChildren} from '@angular/core';
+import {ExpansionComponent} from '../expansion/expansion.component';
+import {KeyValuePipe, NgTemplateOutlet} from '@angular/common';
 
 @Directive({
   selector: '[jhiTreeNode]',
@@ -8,10 +8,12 @@ import { KeyValuePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 })
 export class TreeNodeDirective {
   level = input.required<number>();
+
   constructor(
     public elementRef: ElementRef,
     public component: ExpansionComponent,
-  ) {}
+  ) {
+  }
 }
 
 @Component({
@@ -24,16 +26,20 @@ export class TreeNodeDirective {
 export class TreeViewComponent implements AfterViewInit {
   @ViewChildren(TreeNodeDirective) expansions!: QueryList<TreeNodeDirective>;
   tree = model<any>();
+  compact = input<boolean>(false);
   expandLevels = model<number>(0);
   activePath = model<string[]>();
 
+  openLevels(expansions: TreeNodeDirective[]) {
+    expansions.forEach(expansion => {
+      const level = expansion.level();
+      expansion.component.opened.set(this.expandLevels() > level);
+    })
+  }
+
   ngAfterViewInit() {
-    this.expansions.changes.subscribe((expansions: TreeNodeDirective[]) => {
-      expansions.forEach(expansion => {
-        const level = expansion.level();
-        expansion.component.opened.set(this.expandLevels() > level);
-      });
-    });
+    this.openLevels(this.expansions.toArray());
+    this.expansions.changes.subscribe((expansions) => this.openLevels(expansions));
   }
 
   getPathWithNode(path: string, node: any): string[] {
@@ -54,4 +60,5 @@ export class TreeViewComponent implements AfterViewInit {
   typeOf(value: any) {
     return typeof value;
   }
+
 }

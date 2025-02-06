@@ -1,5 +1,4 @@
-<div class="h-full">
-
+<div class="h-5/6">
   <div class="w-full flex flex-col h-1/2 gap-1">
     <div class="w-full flex items-center gap-2">
       <input class="rounded border-primary border-2 p-2 outline-none bg-gray-800 flex-grow"
@@ -14,9 +13,10 @@
       <button class="rounded border-primary border-2 p-2">Set Objective</button>
     </div>
     <strong>Explored Tree</strong>
-    <div class="p-2 border-primary border-2 rounded w-full h-[90%]">
+    <div class="p-2 border-primary border-2 rounded w-full flex-grow overflow-scroll">
       <jhi-tree-view
-        [expandLevels]="1000"
+        class="h-full"
+        [expandLevels]="0"
         [tree]="treeView()"
       >
       </jhi-tree-view>
@@ -25,13 +25,13 @@
 
   <div class="w-full flex flex-col h-1/2 gap-1">
     <strong>History</strong>
-    <div class="p-2 border-primary border-2 rounded w-full h-[90%] ">
+    <div class="p-2 border-primary border-2 rounded w-full flex-grow overflow-scroll">
       <div class="flex gap-2 w-full flex-col overflow-hidden h-full">
 
         @for (action of _history(); track $index) {
           <jhi-expansion class="w-full flex border rounded p-1 gap-2 border-primary" #expansionComponent>
             <div class="p-1 gap-2 w-full flex justify-between items-center" ngProjectAs="header">
-              <div class="flex-grow">
+              <div class="flex-grow flex gap-1">
                 <span><strong>Action: </strong>{{ action.action }}</span>
                 <span><strong>Node: </strong>{{ action.node }}</span>
               </div>
@@ -48,4 +48,42 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="relative">
+  @if (loading()) {
+    <div class="absolute backdrop-blur">
+      <span class="material-icons animate-spin text-4xl text-primary">autorenew</span>
+    </div>
+  }
+
+  <div class="flex gap-2 m-2">
+    <button class="p-2 bg-primary rounded" (click)="getNextAction()">Get next Action</button>
+    <button class="p-2 bg-primary rounded" (click)="runAction(nextAction())">Run Action</button>
+  </div>
+  <div class="flex flex-col">
+    <span>Action: {{ nextAction().action }}</span>
+    <span>Node: {{ nextAction().node }}</span>
+    <span>Comment: {{ nextAction().short_comment }}</span>
+  </div>
+  <div class="flex flex-col">
+    @if (warnings().length > 0) {
+      <span class="text-red-400">
+      <strong>Warnings:</strong>
+        @for (warning of warnings(); track $index) {
+          <span>{{ warning }}</span>
+        }
+    </span>
+    }
+    @if (errors().length > 0) {
+      <span class="text-red-400">
+      <strong>Errors:</strong>
+        @for (error of errors(); track $index) {
+          <span>{{ error }}</span>
+        }
+    </span>
+    }
+
+  </div>
+
 </div>

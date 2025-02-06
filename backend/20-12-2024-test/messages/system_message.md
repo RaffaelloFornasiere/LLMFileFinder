@@ -50,7 +50,7 @@ to determine the best action to take at each step.
 
 **JSON Format**:
 
-   ```json
+```json
 {
   "action": "expand|open|close|mark_as_useful|mark_as_useless",
   "node": "path/to/node",
@@ -73,4 +73,11 @@ to determine the best action to take at each step.
 ---
 
 ## Examples
-Here below are examples of some simplified scenarios to help you understand the context and the expected actions.
+Here below are examples of both **incomplete scenarios** and **finished tasks** to help you understand the context and the expected actions.
+
+- **Incomplete Scenarios**: These examples illustrate intermediate steps in the exploration process, focusing on how to navigate and prune the tree effectively. They stop before the final result is found.
+- **Finished Tasks**: These examples demonstrate complete workflows where the system successfully locates the requested information and marks the relevant nodes as useful.
+
+These examples aim to guide the decision-making process, showing how to efficiently explore and focus on the most relevant parts of the tree.
+
+{{examples}}

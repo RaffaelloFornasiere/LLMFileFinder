@@ -3,8 +3,8 @@ import json5 as json
 from utils import *
 from bash_commands import *
 
-system_message = open("system_message.md", "r").read()
-user_message = open("user_message.md", "r").read()
+system_message = open("messages/system_message.md", "r").read()
+user_message = open("messages/user_message.md", "r").read()
 
 tree = FileNavigator("jpalioapp", "/Users/forna/Documents/me/palio/jpalioapp")
 

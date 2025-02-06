@@ -1,41 +1,40 @@
 <ng-template #treeNode let-nodes="nodes" let-level="level" let-path="path">
   @for (node of nodes | keyvalue; track node.key) {
-    <jhi-expansion #expansion jhiTreeNode [level]="level" (click)="$event.stopPropagation()">
-      <!--        [ngClass]="isNodeActive(getPathWithNode(path, node.key)) ? 'bg-blue-700' : 'bg-blue-800'"-->
-      <div
-        class="flex items-center rounded"
-        (click)="setActivePath(path, node.key); $event.stopPropagation()"
-        ngProjectAs="header"
-      >
+    @if (typeOf(node.value) === 'object') {
+      <jhi-expansion #expansion jhiTreeNode [level]="level" (click)="$event.stopPropagation()">
+        <div class="flex items-center rounded"
+             (click)="setActivePath(path, node.key); $event.stopPropagation()"
+             ngProjectAs="header">
           <span
-            [class.invisible]="typeOf(node.value) !== 'object'"
-            class="h-full display ml-2 cursor-pointer material-icons"
+            class="h-full display ml-1 cursor-pointer material-icons"
             style="transition: all ease-in-out 0.2s"
             [style]="{ transform: expansion.opened() ? 'rotate(90deg)' : '' }"
-            (click)="expansion.toggle()"
-          >chevron_right
+            (click)="expansion.toggle()">
+            chevron_right
           </span>
-        <span class="px-2">
-          {{ node.key }}:
-        </span>
-        @if (node.value !== null && typeOf(node.value) !== 'object') {
-          <span class="text-xs text-gray-400">{{node.value}}</span>
-        }
-      </div>
-      <div ngProjectAs="content"
-           class="flex flex-col pl-3 gap-2 border-l mt-2 mb-2 treeNode">
-        <ng-container
-          *ngTemplateOutlet="treeNode; context: { nodes: node.value, level: level + 1, path: getPathWithNode(path, node.key) }"
-        ></ng-container>
-      </div>
-    </jhi-expansion>
+          <span class="px-1">
+            {{ node.key }}
+            @for (attribute of node.value! | keyvalue; track attribute.key) {
+              @if (typeOf(attribute.value) !== 'object') {
+                <span class="text-gray-400 text-xs"> ({{ attribute.key }}: {{ attribute.value }}) </span>
+              }
+            }
+          </span>
+        </div>
+        <div ngProjectAs="content" class="flex flex-col ml-3 pl-2 gap-2 border-l border-opacity-20 my-1 treeNode">
+          <ng-container
+            *ngTemplateOutlet="treeNode; context: { nodes: node.value, level: level + 1, path: getPathWithNode(path, node.key) }"
+          ></ng-container>
+        </div>
+      </jhi-expansion>
+    }
   }
 </ng-template>
 
-<div class="flex h-full p-0 flex-col gap-2 overflow-y-scroll">
-  <div scroll-fade-top style="--scroll-fade-color: rgb(31 41 55)"></div>
+<div class="flex h-full p-0 flex-col gap-2 overflow-y-scroll text-sm">
+  <!--  <div scroll-fade-top style="&#45;&#45;scroll-fade-color: rgb(31 41 55)"></div>-->
   <ng-container *ngTemplateOutlet="treeNode; context: { nodes: tree(), level: 0, path: '' }"></ng-container>
-  <div scroll-fade-bottom style="--scroll-fade-color: rgb(31 41 55)"></div>
+  <!--  <div scroll-fade-bottom style="&#45;&#45;scroll-fade-color: rgb(31 41 55)"></div>-->
 </div>
 
 
